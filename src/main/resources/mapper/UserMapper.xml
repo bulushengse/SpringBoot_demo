@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+	
+	<!-- 通过user_id获取数据 -->
+	<select id="findByUiId" parameterType="java.lang.String" resultType="User">
+		select 
+			"USER_ID",
+			"USERNAME",
+			"PASSWORD",
+			"NAME",
+			"RIGHTS",
+			"ROLE_ID",
+			"LAST_LOGIN",
+			"IP",
+			"STATUS",
+			"BZ",
+			"SKIN",
+			"EMAIL",
+			"PHONE"
+		from 
+			"SYS_USER"
+		where 
+			"USER_ID" = #{userId}
+	</select>
+	
+	
+</mapper>

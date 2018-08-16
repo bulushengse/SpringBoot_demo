@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<!-- 
+1，%logger{n}：输出Logger对象类名，n代表长度；
+2，%class{n}:输出所在类名，
+3，d{pattern}或者date{pattern}：输出日志日期，格式同java；
+4，L/line：日志所在行号；
+5，m/msg：日志内容；
+6，method：所在方法名称；
+7，p/level：日志级别；
+8，thread：所在线程名称；
+ -->
+<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+        <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+    </encoder>
+    <target>System.out</target>
+</appender>
+
+<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <encoder>
+        <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+    </encoder>
+    <file>springbootdemo.log</file>
+    <append>true</append>
+</appender>
+
+<appender name="ROLLFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder>
+        <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+    </encoder>
+    <append>true</append>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>springboot.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>30</maxHistory>
+    </rollingPolicy>
+</appender>
+
+<appender name="SIZEROLLFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder>
+        <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+    </encoder>
+    <append>true</append>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>springboot.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        <maxFileSize>10MB</maxFileSize>
+        <maxHistory>30</maxHistory>
+    </rollingPolicy>
+</appender>
+
+<root level="DEBUG">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="SIZEROLLFILE" />
+</root>
+</configuration>
+
