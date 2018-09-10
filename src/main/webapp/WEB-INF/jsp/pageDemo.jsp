@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>index</title>
+<title>pageDemo</title>
 <base href="<%=basePath%>">
 <meta name="description" content="overview & stats" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,8 +18,18 @@
 
 </head>
 <body>
-	<h1>数据：${msg}</h1>
-	<span style="color:#f00;">当前页面文件名：index.jsp</span>
+	
+	<c:forEach items="${pageinfo.list}" var="user" varStatus="vs">
+		<h5>${user}</h5>
+	</c:forEach>
+	
+	<h5> 当前页:${pageinfo.pageNum } </h5>
+	<h5> 每页数量:${pageinfo.pageSize }  </h5>
+	<h5> 当前页数量:${pageinfo.size }  </h5>
+	<h5> 总记录数:${pageinfo.total }  </h5>
+	<h5> 总页数:${pageinfo.pages }  </h5>
+	
+	<span style="color:#f00;">当前页面文件名：pageDemo.jsp</span>
 	<script type="text/javascript">
 
 	</script>

@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
-@Setter@Getter
+@Setter@Getter@ToString
 public class A {
 	
 	@Value("${spring.datasource.username}")

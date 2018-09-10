@@ -1,35 +1,31 @@
 package com.example.demo.config;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.ibatis.plugin.Interceptor;
+import org.aspectj.lang.annotation.Aspect;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
+import org.springframework.aop.Advisor;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource;
-import org.springframework.transaction.interceptor.RollbackRuleAttribute;
-import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
-import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.interceptor.TransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
-import com.alibaba.druid.pool.DruidDataSource;
+import com.github.pagehelper.PageHelper;
 
+@Aspect   //aop切面类，用于开启全局事务
 @Configuration
 public class MybatisConfig {
 
@@ -58,65 +54,84 @@ public class MybatisConfig {
         }
         // 别名
         sqlSessionFactory.setTypeAliasesPackage("com.example.demo.bean");
-		//Interceptor[] interceptor = {new PaginationInterceptor()};
-		//sqlSessionFactoryBean.setPlugins(interceptor); //分页插件
+        // 分页插件
+        
+        
+        //sqlSessionFactory.setPlugins(new Interceptor[] { (Interceptor) pageHelper() }); 
 		
 		return sqlSessionFactory;
 	}
 	
 	
-
+	 @Bean
+	 public PageHelper getPageHelper(){
+		 PageHelper pageHelper=new PageHelper();
+		 
+		 Properties properties=new Properties();
+		 properties.setProperty("helperDialect","oracle");
+		 properties.setProperty("reasonable","true");
+		 properties.setProperty("supportMethodsArguments","true");
+		 properties.setProperty("params","count=countSql");
+		 
+		 pageHelper.setProperties(properties);
+		 return pageHelper;
+	 }
+	
+	
+	
+	
 	/**
-	 * 开启事务管理  三种方法
-	 * 1.注解式事务，手动创建transactionManager()
-	 * 2.注解式事务，在启动类SpringBootDemoApplication上添加注解@EnableTransactionManagement
-	 * 3.声明式事务，
+	 * 开启事务管理  两种方法
+	 * 1.声明注解式事务，
+	 * 首先在启动类SpringBootDemoApplication类上添加注解@EnableTransactionManagement开启事务支持（似乎可有可无）
+	 * 如果是多数据源，手动创建transactionManager1() ，  transactionManager2() ， ... 
+	 * 然后在访问数据库的Service类上或其方法上添加@Transactional 或  @Transactional(value="transactionManager1") 注解
+	 * 
+	 * 2.声明配置式事务，全局事务
 	 * 
 	 * @return
 	 */
-    @Bean
-    public DataSourceTransactionManager transactionManager() {
+	/* 	@Bean
+    public DataSourceTransactionManager transactionManager1() {
         return new DataSourceTransactionManager(dataSource);
-    }
-	
-    /*@Bean("txSource")
-    public TransactionAttributeSource transactionAttributeSource(){
-      NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
-       只读事务，不做更新操作
-      RuleBasedTransactionAttribute readOnlyTx = new RuleBasedTransactionAttribute();
-      readOnlyTx.setReadOnly(true);
-      readOnlyTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_NOT_SUPPORTED );
-      当前存在事务就使用当前事务，当前不存在事务就创建一个新的事务
-      //RuleBasedTransactionAttribute requiredTx = new RuleBasedTransactionAttribute();
-      //requiredTx.setRollbackRules(
-      //  Collections.singletonList(new RollbackRuleAttribute(Exception.class)));
-      //requiredTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-      RuleBasedTransactionAttribute requiredTx = new RuleBasedTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED,
-          Collections.singletonList(new RollbackRuleAttribute(Exception.class)));
-      requiredTx.setTimeout(5);
-      Map<String, TransactionAttribute> txMap = new HashMap<>();
-      txMap.put("add*", requiredTx);
-      txMap.put("save*", requiredTx);
-      txMap.put("insert*", requiredTx);
-      txMap.put("update*", requiredTx);
-      txMap.put("delete*", requiredTx);
-      txMap.put("get*", readOnlyTx);
-      txMap.put("query*", readOnlyTx);
-      source.setNameMap( txMap );
-      return source;
-    }
-    *//**切面拦截规则 参数会自动从容器中注入*//*
-    @Bean
-    public AspectJExpressionPointcutAdvisor pointcutAdvisor(TransactionInterceptor txInterceptor){
-      AspectJExpressionPointcutAdvisor pointcutAdvisor = new AspectJExpressionPointcutAdvisor();
-      pointcutAdvisor.setAdvice(txInterceptor);
-      pointcutAdvisor.setExpression("execution (* com.alibaba.fm9..service.*.*(..))");
-      return pointcutAdvisor;
-    }
-    事务拦截器
-    @Bean("txInterceptor")
-    public TransactionInterceptor getTransactionInterceptor(PlatformTransactionManager tx){
-      return new TransactionInterceptor(tx , transactionAttributeSource()) ;
     }*/
 	
+	//--------全局事务----------------------
+    @Autowired
+    private PlatformTransactionManager transactionManager;
+
+    @Bean
+    public TransactionInterceptor txAdvice() {
+
+        DefaultTransactionAttribute txAttr_REQUIRED = new DefaultTransactionAttribute();
+        txAttr_REQUIRED.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+
+        DefaultTransactionAttribute txAttr_REQUIRED_READONLY = new DefaultTransactionAttribute();
+        txAttr_REQUIRED_READONLY.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        txAttr_REQUIRED_READONLY.setReadOnly(true);
+
+        NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
+        source.addTransactionalMethod("add*", txAttr_REQUIRED);
+        source.addTransactionalMethod("save*", txAttr_REQUIRED);
+        source.addTransactionalMethod("delete*", txAttr_REQUIRED);
+        source.addTransactionalMethod("update*", txAttr_REQUIRED);
+        source.addTransactionalMethod("exec*", txAttr_REQUIRED);
+        source.addTransactionalMethod("set*", txAttr_REQUIRED);
+        source.addTransactionalMethod("get*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("query*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("find*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("list*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("count*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("is*", txAttr_REQUIRED_READONLY);
+        return new TransactionInterceptor(transactionManager, source);
+    }
+
+    @Bean
+    public Advisor txAdviceAdvisor() {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* com.example.demo.service..*(..))");
+        return new DefaultPointcutAdvisor(pointcut, txAdvice());
+    }
+   //--------全局事务----------------------
+    
 }

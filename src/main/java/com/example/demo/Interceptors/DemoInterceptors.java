@@ -12,7 +12,7 @@ public class DemoInterceptors extends HandlerInterceptorAdapter{
 		
 		String path = request.getServletPath();
 		
-		System.out.println("path:"+path);
+		System.out.println("-----------------"+path);
 		return true;
 	}
 }

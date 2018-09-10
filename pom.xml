@@ -99,7 +99,12 @@
             <groupId>org.springframework.boot</groupId>  
             <artifactId>spring-boot-starter-freemarker</artifactId>  
         </dependency>  
-        
+<!--          thymeleaf模版
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency> -->
+		
         <!-- mybatis -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -153,11 +158,17 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- 支持aop切面 -->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
 		<!-- 支持调试 热部署 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
+	
 	</dependencies>
 
 	<build>

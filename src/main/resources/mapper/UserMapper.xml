@@ -3,26 +3,72 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.UserMapper">
 	
-	<!-- 通过user_id获取数据 -->
+	<!-- 根据ID查找用户数据-->
 	<select id="findByUiId" parameterType="java.lang.String" resultType="User">
 		select 
 			"USER_ID",
 			"USERNAME",
 			"PASSWORD",
 			"NAME",
-			"RIGHTS",
-			"ROLE_ID",
 			"LAST_LOGIN",
-			"IP",
-			"STATUS",
-			"BZ",
-			"SKIN",
-			"EMAIL",
-			"PHONE"
+			"IP"
 		from 
 			"SYS_USER"
 		where 
 			"USER_ID" = #{userId}
+	</select>
+	
+	<!-- 新增用户 -->
+	<insert id="save" parameterType="User">
+		insert into "SYS_USER" (
+			"USER_ID",
+			"USERNAME",
+			"PASSWORD",
+			"NAME",
+			"LAST_LOGIN",
+			"IP"
+		) values (
+			#{USER_ID},
+			#{USERNAME},
+			#{PASSWORD},
+			#{NAME},
+			#{LAST_LOGIN},
+			#{IP}
+		)
+	</insert>
+	
+	
+	<!-- 查询 (分页)-->
+	<select id="datalistPage" parameterType="PlugPage" resultType="User">
+		select 
+			"USER_ID",
+			"USERNAME",
+			"PASSWORD",
+			"NAME",
+			"LAST_LOGIN",
+			"IP"
+		from 
+			"SYS_USER"
+		<where>1=1
+			<if test="pd.USER_ID != null and pd.USER_ID !=''">
+				and USER_ID = #{pd.USER_ID}
+			</if>
+			
+		</where>
+	</select>
+	
+		
+	<!-- 查询 (全部)-->
+	<select id="listAll" parameterType="PageData" resultType="User">
+		select 
+			"USER_ID",
+			"USERNAME",
+			"PASSWORD",
+			"NAME",
+			"LAST_LOGIN",
+			"IP"
+		from 
+			"SYS_USER"
 	</select>
 	
 	

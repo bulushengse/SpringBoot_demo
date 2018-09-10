@@ -1,4 +1,4 @@
-package com.example.demo.config;
+ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -20,7 +21,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 		
 	  /**
 	   * 控制层controller返回view添加设置前缀 和后缀，两种方法
-	   * 1.手动创建viewResolver()
+	   * 1.重写viewResolver方法
 	   * 2.在application.properties文件中配置
 	   * @return
 	   */
@@ -71,6 +72,14 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 	    }  
 	   
 
-	   
-	   
+	   /**
+	    * 重写addViewControllers方法，实现一个请求到视图的映射，而无需书写controller
+	    * @param registry 
+	    */
+	    @Override  
+	    public void addViewControllers(ViewControllerRegistry registry){  
+	    	//super.addViewControllers(registry);
+	        registry.addViewController("/").setViewName("/login");  
+	        
+	    } 
 }

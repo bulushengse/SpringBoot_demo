@@ -9,7 +9,6 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
@@ -19,10 +18,9 @@ import com.alibaba.druid.support.http.StatViewServlet;
 /**
  * Druid的DataResource配置类 ，
  * 获取application配置文件中的变量的两种方法1和2。
- * 创建数据源DataSource的两种方法A和B。
+ * 创建数据源DataSource的两种方法A和B。 所在的类必须在spring的ioc容器中。
  */
 @Configuration		
-@EnableTransactionManagement //支持事务注解
 public class DatasourceConfig{
     
 	//1.注解@Autowired 自动装配Environment类，env.getProperty(“key”)获取value
@@ -75,15 +73,15 @@ public class DatasourceConfig{
     
        
     /**
-     * B. 手动set方法创建dataSource(),
+     * B. 手动创建dataSource(),
      * @return
      * @throws Exception
      */
     /* @Bean
 	public DataSource dataSource() throws Exception {
 		DruidDataSource dds = new DruidDataSource();
-		//dds.setDriverClassName(env.getProperty("driverClassName"));
-        dds.setDriverClassName(driverClassName);
+		//dds.setDriverClassName(env.getProperty("driverClassName"));//1
+        dds.setDriverClassName(driverClassName);//2
         dds.setUrl(connectionUrl);
         dds.setUsername(username);
         dds.setPassword(password);
