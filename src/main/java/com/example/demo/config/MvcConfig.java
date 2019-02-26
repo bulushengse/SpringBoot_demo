@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import com.example.demo.Interceptors.DemoInterceptors;
+import com.example.demo.Interceptors.MyInterceptors;
 
 @Configuration  
 @EnableWebMvc   //开启Spring MVC支持，若无此句，重写WebMvcConfigurerAdapter方法无效  
@@ -57,8 +57,8 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 	    * @return 
 	    */  
 	    @Bean  
-	    public DemoInterceptors demoInterceptor(){  
-	        return new DemoInterceptors();  
+	    public MyInterceptors demoInterceptor(){  
+	        return new MyInterceptors();  
 	    }  
 	  
 	    /** 
