@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication 
 public class SpringBootDemoApplication extends SpringBootServletInitializer{
 
+	/*
+	 * 访问地址：http://localhost:8080/
+	*/	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootDemoApplication.class, args);
 	}

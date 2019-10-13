@@ -35,13 +35,16 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 	    } 
 	   
 	   /**
-	    * 对静态资源的访问
+	    * 对静态资源的访问，也可在application.properties文件中配置
 	    */
 	    @Override  
 	    public void addResourceHandlers(ResourceHandlerRegistry registry) {  
 	        //super.addResourceHandlers(registry);  
-	        //addResourceLocations指的是文件放置的目录，addResourceHandler指的是对外暴露的访问路径  
+	        //addResourceHandler指的是对外暴露的访问路径，addResourceLocations指的是文件放置的目录
 	        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");  
+	        //WebJars以jar包的形式来使用前端的各种框架、组件
+	        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+	        
 	    }
 	    
 	   /**
@@ -73,7 +76,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 	   
 
 	   /**
-	    * 重写addViewControllers方法，实现一个请求到视图的映射，而无需书写controller
+	    * 重写addViewControllers方法，实现一个请求到视图的映射，设置默认的首页
 	    * @param registry 
 	    */
 	    @Override  
