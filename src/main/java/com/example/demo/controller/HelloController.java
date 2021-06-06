@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.bean.A;
 import com.example.demo.bean.B;
 import com.example.demo.service.UserService;
-
 
 @RestController//@Controller和@ResponseBody的合集
 public class HelloController {

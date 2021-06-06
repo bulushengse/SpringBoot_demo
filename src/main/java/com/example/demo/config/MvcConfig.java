@@ -42,9 +42,10 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 	        //super.addResourceHandlers(registry);  
 	        //addResourceHandler指的是对外暴露的访问路径，addResourceLocations指的是文件放置的目录
 	        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");  
+	        //favicon.ico
+	        registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/");
 	        //WebJars以jar包的形式来使用前端的各种框架、组件
 	        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-	        
 	    }
 	    
 	   /**

@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import com.example.demo.bean.User;
 import com.example.demo.bean.A;
 
-
 @Configuration //@Configuration启动容器+@Bean注册Bean
 public class BeanConfig {
 	
@@ -15,7 +14,7 @@ public class BeanConfig {
 		return new A();
 	}
 	
-	@Bean(name="user")
+	@Bean(name="user")      //表映射类不需要放容器，只是测试用
 	public User getUser() {
 		return new User();
 	}

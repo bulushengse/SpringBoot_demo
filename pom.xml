@@ -112,7 +112,6 @@
             <version>1.3.0</version>
         </dependency>
         
-        
         <!-- oracle-->
         <!-- 手动添加ojdbc6.jar到maven本地仓库  mvn install:install-file -Dfile=E:\jar包\jar-数据库jdbc-jar包\ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.1.0 -Dpackaging=jar-->
         <dependency>
@@ -127,7 +126,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.35</version>
 		</dependency>  -->
-		
 		
 		<!-- alibaba的druid数据库连接池 -->
 		<dependency>

@@ -4,7 +4,7 @@
 <mapper namespace="com.example.demo.mapper.UserMapper">
 	
 	<!-- 根据ID查找用户数据-->
-	<select id="findByUiId" parameterType="java.lang.String" resultType="User">
+	<select id="findByUid" parameterType="java.lang.String" resultType="User">
 		select 
 			"USER_ID",
 			"USERNAME",

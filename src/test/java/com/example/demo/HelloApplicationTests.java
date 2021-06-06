@@ -20,7 +20,7 @@ import com.example.demo.controller.HelloController;
 
 @RunWith(SpringJUnit4ClassRunner.class)			//SpringBoot对JUnit4的支持
 @SpringBootTest(classes = HelloController.class) //指定Spring Boot的启动类。
-@WebAppConfiguration							//开启Web应用的配置， 用千模拟ServletContext。
+@WebAppConfiguration							//开启Web应用的配置， 用于模拟ServletContext。
 //SpringBoot 提供的单元测试    
 public class HelloApplicationTests {
 	

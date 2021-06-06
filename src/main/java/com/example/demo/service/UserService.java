@@ -28,7 +28,7 @@ public class UserService{
     
     public User findUser(String userId) {
 
-        return userMapper.findByUiId(userId);
+        return userMapper.findByUid(userId);
     }
     
     //@Transactional

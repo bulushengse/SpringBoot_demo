@@ -16,7 +16,7 @@ import com.github.pagehelper.Page;
 @Mapper
 public interface UserMapper {
 
-	User findByUiId(String userId);
+	User findByUid(String userId);
 	
 	Integer save(User user);
 	

@@ -52,11 +52,9 @@ public class MybatisConfig {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // 别名
+        // 给所有pojo对象起别名
         sqlSessionFactory.setTypeAliasesPackage("com.example.demo.bean");
         // 分页插件
-        
-        
         //sqlSessionFactory.setPlugins(new Interceptor[] { (Interceptor) pageHelper() }); 
 		
 		return sqlSessionFactory;
